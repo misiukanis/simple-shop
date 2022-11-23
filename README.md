@@ -1,6 +1,6 @@
 # A simple SHOP
 
-![shop](screen.PNG)
+![shop](screen.png)
 
 ## Architecture
 
@@ -9,7 +9,7 @@
 - Clean Architecture
 - CQRS
 
-![shop](diagram_transparent.PNG)
+![shop](diagram_transparent.png)
 
 ## Technologies
 - .NET 7.0
