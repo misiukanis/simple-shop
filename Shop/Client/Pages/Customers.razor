@@ -1,0 +1,48 @@
+﻿@page "/Customers"
+@using Shop.Shared.DTOs
+@using Shop.Client.HttpClients;
+@using Shop.Client.Services;
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppState
+@inject NavigationManager NavigationManager
+
+
+<h1>Customers</h1>
+
+<p>
+    <button @onclick="() => NavigateToCustomerCreating()" class="button create-button">Create</button>
+</p>
+
+@foreach (var customer in CustomersInShop)
+{
+    <div class="single-item">
+        <strong>Id:</strong> @customer.Id
+        <br />
+        <strong>Name:</strong> @customer.Name
+        <br /><br />
+        <div class="inline-block">
+            <button @onclick="() => NavigateToCustomerEditing(customer.Id)" class="button">Edit</button>
+        </div>
+        <hr />
+    </div>
+}
+
+
+@code {
+    public List<CustomerDTO> CustomersInShop = new List<CustomerDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        CustomersInShop = await ShopHttpClient.GetCustomersAsync();
+    }
+
+    private void NavigateToCustomerEditing(Guid customerId)
+    {
+        NavigationManager.NavigateTo($"/EditCustomer/{customerId}");
+    }
+
+    private void NavigateToCustomerCreating()
+    {
+        NavigationManager.NavigateTo($"/CreateCustomer");
+    }
+}

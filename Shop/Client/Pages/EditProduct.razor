@@ -1,0 +1,64 @@
+﻿@page "/EditProduct/{ProductId:guid}"
+@using Shop.Shared.DTOs
+@using Shop.Client.HttpClients;
+@using Shop.Client.Services;
+@using Resources
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppState
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<h1>Edit product</h1>
+
+<div class="independent-form-contents">
+    <EditForm Model="@ExistingProduct" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Name</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="ExistingProduct.Name" style="width:400px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Price</label>
+        </div>
+        <div class="editor-field">
+            <InputNumber @bind-Value="ExistingProduct.Price" />
+        </div>
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" class="button" value="Save" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter]
+    public Guid ProductId { get; set; }
+
+    public UpdateProductDTO ExistingProduct = new UpdateProductDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var product = await ShopHttpClient.GetProductByIdAsync(ProductId);
+        ExistingProduct.Id = product.Id;
+        ExistingProduct.Name = product.Name;
+        ExistingProduct.Price = product.Price;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await ShopHttpClient.UpdateProductAsync(ExistingProduct);
+
+        ToastService.ShowSuccess(Messages.ProductSaved, Messages.Success);
+        NavigationManager.NavigateTo($"/Products");
+    }
+}
