@@ -9,7 +9,11 @@
 - Clean Architecture
 - CQRS
 
+<br/>
+
 ![shop](diagram_transparent.png)
+
+<br/><br/>
 
 ## Technologies
 - .NET 7.0
@@ -37,9 +41,9 @@
 
 ## How to run the application
 1. Download and run Event Store.
-2. Create a cloud database on https://www.mongodb.com/ (it is free) and fill in appsettings.js in Shop.Server:
-```MongoDbConnectionString```
-```MongoDbDatabaseName```
+2. Create a cloud database on https://www.mongodb.com/ (it is free) and fill in appsettings.js in Shop.Server: <br/>
+```MongoDbConnectionString``` <br/>
+```MongoDbDatabaseName``` <br/>
 3. Launch the application!
 
 
