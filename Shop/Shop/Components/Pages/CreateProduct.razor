@@ -1,0 +1,55 @@
+﻿@page "/CreateProduct"
+@using Shop.Application.DTOs
+@using Shop.HttpClients;
+@using Shop.Models.Requests
+@using Shop.Services;
+@using Resources
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppState
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<h1>Create product</h1>
+
+<div class="independent-form-contents">
+    <EditForm Model="@NewProduct" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Name</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="NewProduct.Name" style="width:400px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Price</label>
+        </div>
+        <div class="editor-field">
+            <InputNumber @bind-Value="NewProduct.Price" />
+        </div>
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" class="button" value="Save" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    public CreateProductRequest NewProduct = new CreateProductRequest();
+
+    private async Task HandleValidSubmit()
+    {
+        await ShopHttpClient.CreateProductAsync(NewProduct);
+        
+        ToastService.ShowSuccess(Messages.ProductCreated);
+        NavigationManager.NavigateTo($"/Products");
+    }
+}
+

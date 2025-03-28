@@ -1,0 +1,87 @@
+﻿@page "/Orders"
+@using Shop.Domain.Aggregates.OrderAggregate
+@using Shop.Application.DTOs
+@using Shop.HttpClients;
+@using Shop.Helpers;
+@using Resources
+@inject ShopHttpClient ShopHttpClient
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<h1>Orders</h1>
+
+<p>
+    <button @onclick="() => NavigateToOrderCreating()" class="button create-button">Create</button>
+</p>
+
+@foreach (var order in OrdersInShop)
+{
+    <div class="order">
+        <strong>Id:</strong> @order.Id
+        <br />
+        <strong>Customer:</strong> @order.CustomerName
+        <br />
+        <strong>Customer city:</strong> @order.City
+        <br />
+        <strong>Customer street:</strong> @order.Street
+        <br />
+        <strong>Order status:</strong> <span class="orange-text bold">@(OrderStatusHelper.GetDescription(order.OrderStatus))</span>
+        <br />
+        <strong>Order creation date:</strong> @order.CreationDate.ToShortDateString()
+        <br />
+        <strong>Order total price:</strong> @order.TotalPrice EUR
+        <br />
+        <div class="order-item">
+            @foreach (var orderItem in order.OrderItems)
+            {
+                <div>
+                    <strong>Product:</strong> @orderItem.ProductName
+                    <br />
+                    <strong>Quantity:</strong> @orderItem.Quantity
+                    <br />
+                    <strong>Price:</strong> @orderItem.Price EUR
+                    <hr />
+                </div>
+            }
+        </div>
+        @if (order.OrderStatus == OrderStatus.New)
+        {
+            <div class="inline-block">
+                <button @onclick="() => ChangeOrderStatus(order, OrderStatus.Paid)" class="button">Paid</button>
+            </div>
+            <div class="inline-block">
+                <button @onclick="() => ChangeOrderStatus(order, OrderStatus.Cancelled)" class="button">Cancelled</button>
+            </div>
+        }
+        else if (order.OrderStatus == OrderStatus.Paid)
+        {
+            <div class="inline-block">
+                <button @onclick="() => ChangeOrderStatus(order, OrderStatus.Shipped)" class="button">Shipped</button>
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+    public List<OrderDTO> OrdersInShop = new List<OrderDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        OrdersInShop = await ShopHttpClient.GetOrdersAsync();
+    }
+
+    private async Task ChangeOrderStatus(OrderDTO order, OrderStatus orderStatus)
+    {
+        await ShopHttpClient.ChangeOrderStatusAsync(order.Id, orderStatus);
+        order.OrderStatus = orderStatus;
+
+        ToastService.ShowSuccess(Messages.OrderStatusChanged);
+    }
+
+    private void NavigateToOrderCreating()
+    {
+        NavigationManager.NavigateTo($"/CreateOrder");
+    }
+}

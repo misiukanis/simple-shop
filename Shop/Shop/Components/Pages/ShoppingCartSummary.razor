@@ -1,0 +1,86 @@
+﻿@page "/ShoppingCartSummary"
+@using Shop.Models;
+@using Shop.HttpClients;
+@using Shop.Services;
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppStateService
+@inject CartService CartService
+@inject NavigationManager NavigationManager
+
+
+<h1>Shopping cart</h1>
+
+<div class="cart-contents">
+    @foreach (var item in Cart.CartItems)
+    {
+        <div class="cart-item inline-block">
+            <strong>Product:</strong> @item.ProductName
+            <br />
+            <strong>Price:</strong> @item.Price EUR
+            <br />
+            <strong>Quantity:</strong> @item.Quantity
+            <br />
+            <div class="increase-item-quantity-link">
+                <a href="" @onclick="() => IncreaseItemQuantity(item)" @onclick:preventDefault>
+                    <img src="images/addToCart.png" class="add-to-cart-image" />
+                </a>
+            </div>
+            <div class="decrease-item-quantity-link">
+                <a href="" @onclick="() => DecreaseItemQuantity(item)" @onclick:preventDefault>
+                    <img src="images/removeFromCart.png" class="remove-from-cart-image" />
+                </a>
+            </div>
+            <hr />
+        </div>
+    }
+
+    <div class="cart-summary">
+        Total price: @Cart.TotalPrice EUR
+        <br />
+        Total quantity: @Cart.TotalQuantity
+        <br/><br/>
+        @if (Cart.CartItems.Any())
+        {
+            <button @onclick="() => NavigateToOrderCreating()" class="button cart-summary-button">Order</button>
+            <button @onclick="() => EmptyCart()" class="button cart-summary-button">Empty</button>
+        }
+    </div>
+</div>
+
+
+@code {
+    public Cart Cart = new Cart();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CartService.RefreshShoppingCartAsync();
+        Cart = await CartService.GetShoppingCartAsync();
+        AppStateService.SetCartSummary(Cart.TotalQuantity, Cart.TotalPrice);
+    }
+
+    private void NavigateToOrderCreating()
+    {
+        NavigationManager.NavigateTo($"/CreateOrder");
+    }
+
+    private async Task EmptyCart()
+    {
+        await CartService.EmptyCartAsync();
+        Cart = await CartService.GetShoppingCartAsync();
+        AppStateService.SetCartSummary(Cart.TotalQuantity, Cart.TotalPrice);
+    }
+
+    private async Task IncreaseItemQuantity(CartItem cartItem)
+    {
+        await CartService.AddProductToShoppingCartAsync(cartItem.ProductId);
+        Cart = await CartService.GetShoppingCartAsync();
+        AppStateService.SetCartSummary(Cart.TotalQuantity, Cart.TotalPrice);
+    }
+
+    private async Task DecreaseItemQuantity(CartItem cartItem)
+    {
+        await CartService.RemoveProductFromShoppingCartAsync(cartItem.ProductId);
+        Cart = await CartService.GetShoppingCartAsync();
+        AppStateService.SetCartSummary(Cart.TotalQuantity, Cart.TotalPrice);
+    }
+}

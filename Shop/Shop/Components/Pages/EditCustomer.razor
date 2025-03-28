@@ -1,0 +1,57 @@
+﻿@page "/EditCustomer/{CustomerId:guid}"
+@using Shop.Application.DTOs
+@using Shop.HttpClients;
+@using Shop.Models.Requests
+@using Shop.Services;
+@using Resources
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppState
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<h1>Edit customer</h1>
+
+<div class="independent-form-contents">
+    <EditForm Model="@ExistingCustomer" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Name</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="ExistingCustomer.Name" style="width:400px" />
+        </div>
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" class="button" value="Save" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter]
+    public Guid CustomerId { get; set; }
+
+    public UpdateCustomerRequest ExistingCustomer = new UpdateCustomerRequest();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var customer = await ShopHttpClient.GetCustomerByIdAsync(CustomerId);
+        ExistingCustomer.Id = customer.Id;
+        ExistingCustomer.Name = customer.Name;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await ShopHttpClient.UpdateCustomerAsync(ExistingCustomer);
+
+        ToastService.ShowSuccess(Messages.CustomerSaved);
+        NavigationManager.NavigateTo($"/Customers");
+    }
+}

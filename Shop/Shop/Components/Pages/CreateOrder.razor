@@ -1,0 +1,123 @@
+﻿@page "/CreateOrder"
+@using Shop.Models;
+@using Shop.HttpClients;
+@using Shop.Models.Requests
+@using Shop.Services;
+@using Shop.Application.DTOs;
+@using Resources
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppStateService
+@inject CartService CartService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<h1>Create order</h1>
+
+@if (Cart.CartItems.Any())
+{
+    <p>
+        <br/>
+        <strong>Cart:</strong>
+    </p>
+    @foreach (var item in Cart.CartItems)
+    {
+        <div class="cart-item">
+            <strong>Product:</strong> @item.ProductName
+            <br />
+            <strong>Price:</strong> @item.Price EUR
+            <br />
+            <strong>Quantity:</strong> @item.Quantity
+            <br />
+            <hr />
+        </div>
+    }
+
+    <div class="cart-summary">
+        Total price: @Cart.TotalPrice EUR
+        <br />
+        Total quantity: @Cart.TotalQuantity
+    </div>
+
+    <div class="independent-form-contents">
+        <EditForm Model="@NewOrder" OnValidSubmit="@HandleValidSubmit">
+            <div class="independent-form-errors">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+            </div>
+
+            <div class="editor-label">
+                <label>Customer</label>
+            </div>
+            <div class="editor-field">
+                <InputSelect @bind-Value="NewOrder.CustomerId">
+                    <option value="">Select customer ...</option>
+                    @foreach (var customer in Customers)
+                    {
+                        <option value="@customer.Id">@customer.Name</option>
+                    }
+                </InputSelect>
+            </div>
+
+            <div class="editor-label">
+                <label>City</label>
+            </div>
+            <div class="editor-field">
+                <InputText @bind-Value="NewOrder.City" style="width:400px" />
+            </div>
+
+            <div class="editor-label">
+                <label>Street</label>
+            </div>
+            <div class="editor-field">
+                <InputText @bind-Value="NewOrder.Street" style="width:400px" />
+            </div>
+            <br />
+
+            <div class="independent-form-submit">
+                <input type="submit" class="button" value="Save" />
+            </div>
+        </EditForm>
+    </div>
+}
+else
+{
+    <div class="no-items-in-cart">No items in cart</div>
+}
+
+
+@code {
+    public Cart Cart = new Cart();
+    public List<CustomerDTO> Customers = new List<CustomerDTO>();
+    public CreateOrderRequest NewOrder = new CreateOrderRequest();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CartService.RefreshShoppingCartAsync();
+        Cart = await CartService.GetShoppingCartAsync();
+        Customers = await ShopHttpClient.GetCustomersAsync();
+        AppStateService.SetCartSummary(Cart.TotalQuantity, Cart.TotalPrice);
+        
+        NewOrder.OrderItems = new List<CreateOrderItemRequest>();
+        foreach (var item in Cart.CartItems)
+        {
+            NewOrder.OrderItems.Add(new CreateOrderItemRequest
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity
+            });
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await ShopHttpClient.CreateOrderAsync(NewOrder);
+
+        await CartService.EmptyCartAsync();
+        Cart = await CartService.GetShoppingCartAsync();
+        AppStateService.SetCartSummary(Cart.TotalQuantity, Cart.TotalPrice);
+
+        ToastService.ShowSuccess(Messages.OrderSaved);
+        NavigationManager.NavigateTo($"/Orders");
+    }
+}

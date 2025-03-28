@@ -1,0 +1,281 @@
+﻿html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+a, .btn-link {
+    color: #006bb7;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+h1:focus {
+    outline: none;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e50000;
+}
+
+.validation-message {
+    color: #e50000;
+}
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred."
+    }
+
+.darker-border-checkbox.form-check-input {
+    border-color: #929292;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+
+
+/* new added styles: */
+
+h1 {
+    color: #002D62;
+    height: 50px;
+}
+
+.error-site-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .error-site-content div {
+        width: 500px;
+        height: 200px;
+        text-align: center;
+    }
+
+.validation-errors {
+    padding-top: 15px;
+}
+
+.shopping-cart-link {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.shopping-cart-image {
+    width: 40px;
+    margin-right: 12px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .shopping-cart-image:hover {
+        transform: scale(1.1);
+    }
+
+.shopping-cart-details {
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    color: orange;
+    background-color: #fff5e1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.shopping-cart-quantity,
+.shopping-cart-price {
+    margin: 3px 0;
+}
+
+.add-to-cart-image {
+    width: 60px;
+}
+
+.remove-from-cart-image {
+    width: 60px;
+}
+
+.cart-contents {
+    margin-top: 30px;
+}
+
+.cart-item {
+    margin: 10px;
+    width: 400px;
+    font-size: 14px;
+}
+
+.increase-item-quantity-link {
+    margin-top: 10px;
+    float: left;
+}
+
+.decrease-item-quantity-link {
+    margin-top: 10px;
+    margin-left: 100px;
+}
+
+.cart-summary {
+    margin: 10px;
+    font-weight: bold;
+    color: orange;
+}
+
+.single-item {
+    margin: 30px;
+    width: 400px;
+    display: inline-block;
+}
+
+.add-to-cart-link {
+    margin-left: 150px;
+}
+
+.button {
+    background-color: dodgerblue;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 17px;
+    border-left: 1px solid #919191;
+    border-top: 1px solid #919191;
+    border-right: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
+}
+
+    .button:hover {
+        background-color: #002D62;
+    }
+
+.create-button {
+    margin: 20px;
+}
+
+.cart-summary-button {
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.independent-form-contents {
+    display: block;
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    padding: 0.01em 16px;
+    border-radius: 16px;
+    width: 650px;
+}
+
+.editor-field input, .editor-field textarea, .editor-field select {
+    background: #fff;
+    outline: none;
+    border-left: 1px solid #919191;
+    border-top: 1px solid #919191;
+    border-right: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
+    border-radius: 17px;
+}
+
+.independent-form-contents label {
+    margin: 10px;
+}
+
+.independent-form-contents input {
+    padding: 9px 15px 12px 15px;
+}
+
+.independent-form-contents textarea {
+    padding: 9px 15px;
+}
+
+.independent-form-contents select {
+    padding: 9px 15px 12px 15px;
+}
+
+.independent-form-submit {
+    height: 100px;
+    width: 600px;
+}
+
+    .independent-form-submit input {
+        margin-top: 10px;
+        float: right;
+    }
+
+.editor-label, .display-label {
+    margin-top: 15px;
+}
+
+.order {
+    margin: 10px;
+    padding: 20px;
+    width: 500px;
+    border: 2px solid grey;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.order-item {
+    margin-left: 20px;
+    margin-top: 10px;
+    padding: 10px;
+    width: 400px;
+    font-size: 14px;
+}
+
+.no-items-in-cart {
+    margin: 10px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.orange-text {
+    color: orange;
+}
+
+.bold {
+    font-weight: bold;
+}

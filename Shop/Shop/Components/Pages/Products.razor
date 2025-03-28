@@ -1,0 +1,79 @@
+﻿@page "/Products"
+@using Shop.Models;
+@using Shop.Application.DTOs
+@using Shop.HttpClients;
+@using Shop.Services;
+@using Resources
+@inject ShopHttpClient ShopHttpClient
+@inject AppStateService AppStateService
+@inject CartService CartService
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<h1>Products</h1>
+
+<p>
+    <button @onclick="() => NavigateToProductCreating()" class="button create-button">Create</button>
+</p>
+
+@foreach (var product in ProductsInShop)
+{
+    <div class="single-item">
+        <strong>Id:</strong> @product.Id
+        <br/>
+        <strong>Name:</strong> @product.Name
+        <br/>
+        <strong>Price:</strong> @product.Price EUR
+        <br/><br/>
+        <div class="inline-block">
+            <button @onclick="() => NavigateToProductEditing(product.Id)" class="button">Edit</button>
+        </div>
+        <div class="inline-block">
+            <button @onclick="() => DeleteProduct(product)" class="button">Delete</button>
+        </div>
+        <div class="inline-block">
+            <a class="add-to-cart-link" href="" @onclick="() => AddProductToCart(product.Id)" @onclick:preventDefault>
+                <img src="images/addToCart.png" class="add-to-cart-image" />
+            </a>
+        </div>
+        <hr/>
+    </div>
+}
+
+
+@code {
+    public List<ProductDTO> ProductsInShop = new List<ProductDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProductsInShop = await ShopHttpClient.GetProductsAsync();
+    }
+
+    private void NavigateToProductEditing(Guid productId)
+    {
+        NavigationManager.NavigateTo($"/EditProduct/{productId}");
+    }
+
+    private void NavigateToProductCreating()
+    {
+        NavigationManager.NavigateTo($"/CreateProduct");
+    }
+
+    private async Task DeleteProduct(ProductDTO product)
+    {
+        await ShopHttpClient.DeleteProductAsync(product.Id);
+        ProductsInShop.Remove(product);
+
+        ToastService.ShowSuccess(Messages.ProductDeleted);
+    }
+
+    private async Task AddProductToCart(Guid productId)
+    {
+        await CartService.AddProductToShoppingCartAsync(productId);
+        var cart = await CartService.GetShoppingCartAsync();
+        AppStateService.SetCartSummary(cart.TotalQuantity, cart.TotalPrice);
+
+        ToastService.ShowSuccess(Messages.ProductAddedToCart);
+    }
+}
