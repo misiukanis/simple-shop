@@ -1,6 +1,23 @@
 # A simple SHOP
 
-![shop](screen.png)
+> [!NOTE]
+> The products page:
+
+![blog](shop1.png)
+--
+
+> [!NOTE]
+> The shopping cart page:
+
+![blog](shop2.png)
+--
+
+
+> [!NOTE]
+> The Order creation page:
+
+![blog](shop3.png)
+--
 
 ## Architecture
 
@@ -16,12 +33,12 @@
 <br/><br/>
 
 ## Technologies
-- .NET 7.0
-- C# 11
-- Blazor WebAssembly App
+- .NET 9.0
+- C# 13
+- Blazor Server
 - ASP.NET Core Web API
 - MongoDB
-- Event Store
+- EventStoreDB
 - AutoMapper
 - NLog
 - MediatR
@@ -32,19 +49,23 @@
 
 | Layer | Description |
 | ------ | ------ |
-| Shop.Client | Blazor application |
-| Shop.Server | API |
+| Shop | API and Blazor application |
 | Shop.Application | Communication with Domain Layer |
 | Shop.Infrastructure | Persistence |
 | Shop.Domain | Core business logic |
 
 
 ## How to run the application
-1. Download and run Event Store.
-2. Create a cloud database on https://www.mongodb.com/ (it is free) and fill in appsettings.js in Shop.Server: <br/>
+1. Run EventStoreDB with Docker:<br/>
+```docker run --name esdb-node -it -p 2113:2113 docker.eventstore.com/eventstore/eventstoredb-ee --insecure --run-projections=All --enable-atom-pub-over-http```
+3. Create a MongoDB database in the cloud on https://cloud.mongodb.com (it is free) and fill in appsettings.js in Shop: <br/>
 ```MongoDbConnectionString``` <br/>
 ```MongoDbDatabaseName``` <br/>
-3. Launch the application!
+4. Launch the application!
+
+
+## The star &#11088;
+If you find my project valuable, please click the star on it &#11088;.
 
 
 ## About the Author
